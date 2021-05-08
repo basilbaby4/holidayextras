@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Holiday Extras</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+  <script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl" ng-init="getUsers()">
+
+
+
+  <div class="container">
+    <h2>User Management
+
+      <a ng-click="createUser()" data-toggle="modal" data-target="#myModal" class="btn btn-primary pull-right"
+        style="cursor: pointer;">
+        Add New
+      </a>
+    </h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th colspan="2">Action</th>
+          <th>Given Name</th>
+          <th>Family Name</th>
+          <th>Email</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr pagination-id="listID" total-items="pagination.total" current-page="pagination.current"
+          dir-paginate="item in list | itemsPerPage: pageSize as filtered ">
+          <td><a ng-click="editUser(item)" data-toggle="modal" data-target="#myModal" style="cursor: pointer;">
+              <span class="material-icons">edit</span></a></td>
+          <td><a ng-click="deleteUser(item)" href="javascript:void(0)"> <span class="material-icons">delete</span></a>
+          </td>
+          <td>{{item.givenName}}</td>
+          <td>{{item.familyName}}</td>
+          <td>{{item.email}}</td>
+          <td>{{item.created| date:'medium'}}</td>
+        </tr>
+        <tr ng-show="list.length==0">
+          <td colspan="6">
+            <div class="alert alert-info text-center" style="margin-bottom:0px;">
+              <strong>No records found</strong>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <dir-pagination-controls on-page-change="getUsers(newPageNumber)" pagination-id="listID" boundary-links="true"
+      template-url="../bower_components/angularUtils-pagination/dirPagination.tpl.html">
+    </dir-pagination-controls>
+  </div>
+
+
+
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" ng-submit="submitUserInfo()">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">User Add/Edit</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="givenName">Given Name:</label>
+              <input required type="text" ng-model="userInfo.givenName" class="form-control" id="givenName">
+            </div>
+            <div class="form-group">
+              <label for="familyName">Family Name:</label>
+              <input required type="text" ng-model="userInfo.familyName" class="form-control" id="familyName">
+            </div>
+            <div class="form-group">
+              <label for="email">Email address:</label>
+              <input required type="email" ng-model="userInfo.email" class="form-control" id="email">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../javascripts/angular.js"></script>
+
+</html>
